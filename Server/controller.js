@@ -1,73 +1,64 @@
 const User = require('./user')
+const server_database=require('./server')
+const myDb = server_database.db
+const collection =server_database.collection
 
 const login = (req, res) => {
 
-
-    const newuser = new User({
-        name: req.body.name,
-        email: req.body.email,
+    const query = {
+        email: req.body.email, 
         password: req.body.password
-    });
-    newuser.save().then((result) => {
-        res.send(result)
-    }).catch((err) => {
-        console.log(err);
-    });
+    }
 
-    //making a query
-    collection.findOne(query,(err,result)=>{
+   
 
-        if(res!=null)
-        {
-            const objToSend = 
-            {
+
+    collection.findOne(query, (err, result) => {
+
+        if (result != null) {
+
+            const objToSend = {
                 name: result.name,
                 email: result.email
             }
 
             res.status(200).send(JSON.stringify(objToSend))
-        }
-        else{
+
+        } else {
             res.status(404).send()
         }
+
     })
 
-};
+}
 
 
 const signUp = (req, res) => {
-    const newuser = new User({
+
+    const newUser = {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password
-    });
-    newuser.save().then((result) => {
-        res.send(result)
-    }).catch((err) => {
-        console.log(err);
-    });
+    }
+
+    const query = { email: newUser.email }
+    collection.findOne(query, (err, result) => {
+
+        if (result == null) {
+            collection.insertOne(newUser, (err, result) => {
+                res.status(200).send()
+            })
+        } else {
+            res.status(400).send()
+        }
+
+    })
+
+}
 
 
 
-    //making a query
-    const query = {email: newUser.email}
-    collection.findOne(query,(err,result)=> {
-       if(res==null)
-       {
-           collection.insertOne(newUser,(err,result)=>{
-               res.status(200).send()
-           })
-       }
-       else
-       {
-           res.status(400).send()
-       }
-   })
-
-
-};
-
-module.export = {
-    login,
-    signUp
+module.exports = {
+    login:login,
+    signUp:signUp
 }

@@ -1,11 +1,15 @@
 const express = require('express')
 const app = express()
-const moongoose = require('mongoose')
+const mongoClient = require('mongodb').MongoClient
+const mongoose = require('mongoose');
+const routes = require('./_routes');
 const User = require('./user');
+app.use(express.json())
+
 
 //connect to mongodb
 const dbURI = 'mongodb+srv://Sagar:sy_sagar123@authbackend.itvo8b6.mongodb.net/?retryWrites=true&w=majority'
-mongoose.connect(dbURI, (err, db) => {
+mongoClient.connect(dbURI, (err, db) => {
     if (err)
         console.log("error occured while connection")
     else {
@@ -16,6 +20,8 @@ mongoose.connect(dbURI, (err, db) => {
         const myDb = db.db('myDb')
         const collection =myDb.collection('myTable')
 
+        module.exports = {myDb,collection}
+
         run();
     }
 })
@@ -23,5 +29,6 @@ mongoose.connect(dbURI, (err, db) => {
 async function run() {
 
     //routes
-    app.use(blogRoutes);
+    app.use(routes);
 }
+
