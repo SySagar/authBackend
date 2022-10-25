@@ -15,7 +15,7 @@ mongoClient.connect(url,(err,db)=>{
         const myDb = db.db('myDb')
         const collection =myDb.collection('myTable')
 
-        app.post('/signup',(req,ers)=>{
+        app.post('/signup',(req,res)=>{
 
             const newUser ={
                 name: req.body.name,
@@ -39,7 +39,7 @@ mongoClient.connect(url,(err,db)=>{
 
     })
 
-    app.post('/login',(erq,res)=>{
+    app.post('/login',(req,res)=>{
         const query ={
         email: res.body.email,
         password: res.body.password
