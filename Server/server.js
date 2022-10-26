@@ -2,13 +2,14 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose');
 const routes = require('./_routes');
-const User = require('./user');
+require("dotenv").config();
 app.use(express.json())
 
-
 //connect to mongodb
-const dbURI = 'mongodb+srv://Sagar:sy_sagar123@authbackend.itvo8b6.mongodb.net/?retryWrites=true&w=majority'
-mongoose.connect(dbURI, (err, db) => {
+const dbURI = process.env.dbURI
+
+async function main() {
+await mongoose.connect(dbURI, (err, db) => {
     if (err)
         console.log("error occured while connection")
     else {
@@ -16,14 +17,15 @@ mongoose.connect(dbURI, (err, db) => {
         //listen for request
         app.listen(3000)
 
-
         run();
     }
 })
+}
+
+main()
 
 function run() {
 
     //routes
     app.use(routes);
 }
-
