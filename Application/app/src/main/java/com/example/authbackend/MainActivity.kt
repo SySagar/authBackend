@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private  val baseUrl = "http://10.0.2.2:3000"
+    private  val baseUrl = "https://authentication-hrx4.onrender.com"
     private lateinit var retrofitInstance : Auth_Interface
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
