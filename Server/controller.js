@@ -1,7 +1,4 @@
 const User = require('./user')
-const server_database=require('./server')
-const myDb = server_database.db
-const collection =server_database.collection
 
 const login = (req, res) => {
 
@@ -10,10 +7,9 @@ const login = (req, res) => {
         password: req.body.password
     }
 
-   
+    
 
-
-    collection.findOne(query, (err, result) => {
+    User.findOne(query, (err, result) => {
 
         if (result != null) {
 
@@ -42,10 +38,10 @@ const signUp = (req, res) => {
     }
 
     const query = { email: newUser.email }
-    collection.findOne(query, (err, result) => {
+    User.findOne(query, (err, result) => {
 
         if (result == null) {
-            collection.insertOne(newUser, (err, result) => {
+            User.create(newUser, (err, result) => {
                 res.status(200).send()
             })
         } else {
